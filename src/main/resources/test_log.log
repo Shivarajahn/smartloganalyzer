@@ -1,0 +1,96 @@
+2025-12-04 09:15:22.481  INFO 10234 --- [           main] c.e.demo.DemoApplication                 : Starting DemoApplication using Java 17.0.9 on HOST-DEV01 with PID 10234 (/opt/app/demo.jar started by appuser in /opt/app)
+2025-12-04 09:15:22.487  INFO 10234 --- [           main] c.e.demo.DemoApplication                 : No active profile set, falling back to 1 default profile: "default"
+2025-12-04 09:15:22.991  INFO 10234 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8080 (http)
+2025-12-04 09:15:23.012  INFO 10234 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-04 09:15:23.012  INFO 10234 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.0]
+2025-12-04 09:15:23.081  INFO 10234 --- [           main] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2025-12-04 09:15:23.104  INFO 10234 --- [           main] o.s.b.w.filter.OrderedRequestContextFilter : Filter 'requestContextFilter' configured for use
+2025-12-04 09:15:23.612  INFO 10234 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2025-12-04 09:15:23.847  INFO 10234 --- [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-12-04 09:15:24.163  INFO 10234 --- [           main] c.e.demo.DemoApplication                 : Started DemoApplication in 2.158 seconds (JVM running for 2.643)
+
+2025-12-04 09:16:01.007  INFO 10234 --- [nio-8080-exec-1] c.e.demo.web.UserController              : Incoming request GET /api/users?page=0&size=10
+2025-12-04 09:16:01.145 DEBUG 10234 --- [nio-8080-exec-1] c.e.demo.service.UserService             : Fetching users from repository, page=0, size=10
+2025-12-04 09:16:01.382  INFO 10234 --- [nio-8080-exec-1] c.e.demo.web.UserController              : Returning 10 users, total=57, page=0
+
+2025-12-04 09:16:32.501  INFO 10234 --- [nio-8080-exec-2] c.e.demo.web.UserController              : Incoming request POST /api/users
+2025-12-04 09:16:32.502 DEBUG 10234 --- [nio-8080-exec-2] c.e.demo.web.UserController              : Request body={"name":null,"email":"test@example.com"}
+2025-12-04 09:16:32.518 ERROR 10234 --- [nio-8080-exec-2] c.e.demo.web.RestExceptionHandler        : Unhandled exception while processing request
+
+java.lang.NullPointerException: Cannot invoke "String.trim()" because "name" is null
+	at com.example.demo.service.UserService.validateUser(UserService.java:54)
+	at com.example.demo.service.UserService.createUser(UserService.java:32)
+	at com.example.demo.web.UserController.create(UserController.java:47)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handle(RequestMappingHandlerAdapter.java:711)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1465)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:1319)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1088)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:1002)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:696)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:963)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:779)
+	... 35 common frames omitted
+
+2025-12-04 09:16:32.522  WARN 10234 --- [nio-8080-exec-2] o.s.web.servlet.mvc.support.DefaultHandlerExceptionResolver : Resolved [java.lang.NullPointerException: Cannot invoke "String.trim()" because "name" is null]
+2025-12-04 09:16:32.523  INFO 10234 --- [nio-8080-exec-2] c.e.demo.web.LoggingFilter               : Response 400 for POST /api/users in 21 ms
+
+2025-12-04 09:17:10.014  INFO 10234 --- [nio-8080-exec-3] c.e.demo.web.OrderController             : Incoming request POST /api/orders
+2025-12-04 09:17:10.015 DEBUG 10234 --- [nio-8080-exec-3] c.e.demo.service.OrderService            : Creating order for userId=42, items=3
+2025-12-04 09:17:10.116 DEBUG 10234 --- [nio-8080-exec-3] c.e.demo.repository.OrderRepository      : Executing SQL insert into orders ...
+2025-12-04 09:17:10.139 ERROR 10234 --- [nio-8080-exec-3] c.e.demo.web.RestExceptionHandler        : Database error while creating order
+
+org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [uk_orders_reference]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:296)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:253)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:551)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:367)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at com.example.demo.service.OrderService.createOrder(OrderService.java:88)
+	at com.example.demo.web.OrderController.create(OrderController.java:53)
+	... 42 more
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:59)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:113)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:99)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:200)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3345)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3876)
+	at org.hibernate.action.internal.EntityInsertAction.execute(EntityInsertAction.java:107)
+	... 21 more
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'ORD-2025-00001' for key 'uk_orders_reference'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:117)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1053)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:996)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1219)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:981)
+	... 10 more
+
+2025-12-04 09:17:10.145  WARN 10234 --- [nio-8080-exec-3] c.e.demo.web.LoggingFilter               : Response 500 for POST /api/orders in 131 ms
+
+2025-12-04 09:18:44.331 DEBUG 10234 --- [   scheduling-1] c.e.demo.jobs.OrderCleanupJob            : Running OrderCleanupJob for stale orders older than PT24H
+2025-12-04 09:18:44.512  INFO 10234 --- [   scheduling-1] c.e.demo.jobs.OrderCleanupJob            : Deleted 3 stale orders
+
+2025-12-04 09:19:12.998  INFO 10234 --- [nio-8080-exec-4] c.e.demo.web.HealthController            : Incoming request GET /actuator/health
+2025-12-04 09:19:12.999 DEBUG 10234 --- [nio-8080-exec-4] c.e.demo.web.HealthController            : Health check details requested
+2025-12-04 09:19:13.001  INFO 10234 --- [nio-8080-exec-4] c.e.demo.web.HealthController            : Returning health status UP
+
+2025-12-04 09:20:01.452  INFO 10234 --- [nio-8080-exec-5] c.e.demo.web.ReportController            : Incoming request GET /api/reports/daily
+2025-12-04 09:20:01.453 DEBUG 10234 --- [nio-8080-exec-5] c.e.demo.service.ReportService           : Generating daily report for date=2025-12-03
+2025-12-04 09:20:31.459 ERROR 10234 --- [nio-8080-exec-5]()
