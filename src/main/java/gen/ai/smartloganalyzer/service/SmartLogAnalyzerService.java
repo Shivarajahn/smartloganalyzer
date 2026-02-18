@@ -29,21 +29,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SmartLogAnalyzerService {
 
-	@Value("${app.smol.api-key}")
-	private String apiKey;
-
-	@Value("${app.smol.base-url}")
+	@Value("${ai.model.base-url}")
 	private String apiUrl;
 
-	@Value("${app.smol.model:ai/smollm2}")
+	@Value("${ai.model.name}")
 	private String model;
 
+	private final String apiKey = System.getenv("HF_TOKEN");
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final HttpClient httpClient = HttpClient.newHttpClient();
 
 	public SmartLogAnalyzerResponse analyzeLogText(String logContent) {
 		try {
-			String analysis = callSmollm2API(logContent);
+			String analysis = callAIModelAPI(logContent);
 			return parseAnalysis(analysis);
 		} catch (Exception e) {
 			log.error("Error analyzing log text", e);
@@ -56,7 +54,7 @@ public class SmartLogAnalyzerService {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 			String content = reader.lines().collect(Collectors.joining("\n"));
 
-			String analysis = callSmollm2API(content);
+			String analysis = callAIModelAPI(content);
 			return parseAnalysis(analysis);
 		} catch (Exception e) {
 			log.error("Error analyzing log file", e);
@@ -64,7 +62,7 @@ public class SmartLogAnalyzerService {
 		}
 	}
 
-	private String callSmollm2API(String logContent) throws Exception {
+	private String callAIModelAPI(String logContent) throws Exception {
 		String prompt = """
 				Analyze the following log snippet or error message. Provide:
 				1. Root Cause: Identify the main issue causing the error
@@ -85,7 +83,7 @@ public class SmartLogAnalyzerService {
 				""" + logContent;
 
 		ObjectNode requestNode = objectMapper.createObjectNode();
-		log.debug("Using smollm2 model: {}", model);
+		log.debug("Using model: {}", model);
 		requestNode.put("model", model);
 
 		ArrayNode messages = requestNode.putArray("messages");
@@ -113,6 +111,8 @@ public class SmartLogAnalyzerService {
 		HttpRequest request = reqBuilder.POST(HttpRequest.BodyPublishers.ofString(requestBody)).build();
 
 		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+		
+		log.debug("Model Response : {}", response);
 
 		if (response.statusCode() < 200 || response.statusCode() >= 300) {
 			throw new RuntimeException("API call failed: " + response.body());
